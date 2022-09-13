@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         *浅拷贝
+         */
+         //方法1
+            // let obj1={ name:"张三", age:24, job:"前端" }
+            // let obj2={ name:"李四", age:30 }
+            // let c= Object.assign(obj1,obj2);
+            // console.log("c",c);
+        //方法2 
+
+        // function cloneCopy(source){
+        //     let target={};
+        //     for(key in source){
+        //         if(Object.prototype.hasOwnProperty.call(source,key)){
+        //             target[key] = source[key]
+        //         }
+        //     }
+        //     return target;
+        // }
+        // var a = {
+        //     name: "muyiy",
+        //     book: {
+        //         title: "You Don't Know JS",
+        //         price: "45"
+        //     },
+        //     a1: undefined,
+        //     a2: null,
+        //     a3: 123
+        // }
+        // var b = cloneCopy(a);
+
+      // 深拷贝
+      //方法1
+         JSON.parse(JSON.stringify(copyObj));
+      // 方法2
+      function deepCopy(source){
+          if(!isObject(source)) return source;
+          let target = Array.isArray(source) ?[]:{};
+          for(var k in source){
+              if(source.hasOwnProperty(k)){
+                 if(typeof source[k]==='object'){
+                     target[k] = deepCopy(source[k])
+                 }else{
+                     target[k]=source[k]
+                 }
+              }
+          }
+          return target
+      }
+
+      function isObject(obj){
+          return typeof obj ==='object' && obj !== null
+      }
+
+    </script>
+</body>
+</html>

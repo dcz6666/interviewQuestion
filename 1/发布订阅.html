@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // const eventHub = {
+        //     map: {},
+        //     emit: (name, data) => {
+        //         let q = eventHub.map[name];
+        //         console.log("q",q);
+        //         if (!q) return;
+        //         q.map(f => f.call(null, data))
+        //         return undefined;
+        //     },
+        //     on: (name,fn) => {
+        //         eventHub.map[name] = eventHub.map[name] ||[]
+        //         eventHub.map[name].push(fn)
+        //     },
+        //     off: (name,fn) => {
+        //         const q = eventHub.map[name];
+        //         console.log("qq",q)
+        //         if(!q){return }
+        //         const index = q.indexof(fn);
+        //         if(index<0){return};
+        //         q.splice(index,1);
+        //     }
+        // }
+        // eventHub.on('click', console.log)
+        // eventHub.on('click', console.error)
+        // setTimeout(() => {
+        //     eventHub.emit('click', 'frank')
+        // }, 3000)
+
+        //class 实现
+        class eventHub{
+            map={}
+            on(name,fn){
+                this.map[name]=this.map[name] || []
+                this.map[name].push(fn)
+            }
+            emit(name,data){
+                let fnList= this.map[name] || []
+                console.log("emit:",fnList)
+                if(!fnList) return;
+                fnList.forEach(ele => { ele.call(null,data) });
+            }
+            off(name,fn){
+                const fnList = this.map[name] || []
+                const index = fnList.indexOf(fn)
+                if(index<0) return;
+                fnList.splice(index,1)
+            }
+        }
+        //使用
+        const e =new eventHub()
+        e.on('click',(name)=>{
+            console.log("hi"+name);
+        })
+        setTimeout(()=>{
+            e.emit('click','frank')
+        },3000)
+    </script>
+</body>
+
+</html>

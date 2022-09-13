@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Animal(color){
+            this.color= color;
+        }
+        Animal.prototype.move=function(){} //动物可移动
+        function Dog(color,name){
+            Animal.call(this,color)
+            this.name= name
+        }
+        // 下面三行实现Dog.prototype.__proto__=Anima.prototype
+        function temp(){}
+        temp.prototype= Animal.prototype
+        Dog.prototype.constuctor = Dog 
+        Dog.prototype.say = function(){console.log("汪")}
+        
+    </script>
+</body>
+</html>
