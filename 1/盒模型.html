@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .father {
+        background: green;
+
+    }
+
+    /* 给儿子设置margin-top为10像素 */
+    .son {
+        height: 100px;
+        margin-top: 10px;
+        background: red;
+    }
+
+</style>
+<body>
+    <div class="father">
+        <div class="son"></div>
+    </div>
+    <script>
+        // 1、标准盒模型 IE 盒模型的区别
+        /**
+         * 标准盒模型：盒模型的范围包括margin,padding,content,border,并且content不包含其他部分；
+         * IE盒模型： 盒模型的范围包括margin,padding,content,border,content包含 padding，border
+         * */
+
+        //  2、如何设置两种模型
+        /**
+         * 设置标准盒模型： box-sizing:content-box
+         *设置IE盒模型：box-sizing:content-border
+        */
+    </script>
+</body>
+</html>

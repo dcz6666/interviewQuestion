@@ -15,8 +15,32 @@
     <title>Document</title>
 </head>
 <body>
+    <script src="./js/call&applay&bind.js"></script>
     <script>
-        
+        // 声明一个函数
+        function add (a,b){
+            console.log("this",this)
+            return a+b+this.c
+        }
+        //声明一个对象
+        let obj={
+            c:100
+        }
+        // 添加全局属性
+        window.c=500
+        //执行 call
+        console.log("call",call(add,obj,10,20)) //130
+        console.log("call",call(add,null,10,20))//530
+
+       //执行 applay
+        console.log("apply",apply(add,obj,[10,20])); //130
+        console.log("apply",apply(add,null,[10,20]));//530
+
+       //执行 bind
+    //    let fn =bind(add,obj,10,20);
+    //    console.log("bind",fn());
+       let fn =bind(add,obj);
+       console.log("bind",fn(10,20));
 
     </script>
 </body>

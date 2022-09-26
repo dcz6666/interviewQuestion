@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./js/objAPI.js"></script>
+    <script>
+    // 1、newInstance
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        return []
+      }
+      //调用newInstance 函数创建对象
+      let obj = newInstance(Person, "张三", 18);
+
+
+    // 2、检查类型
+    function Anima(){
+    }
+    let Ani = new Anima();
+     console.log(myInstanceof(Ani,Anima));
+     console.log(myInstanceof(Ani,Object));
+     console.log(myInstanceof(Anima,Object));
+    // console.log(Ani instanceof Anima)
+
+    //3、合并对象测试
+    const object={
+        a:[{x:2},{y:4}],
+        b:1
+    }
+    const other = {
+        a:{z:3},
+        b:[2,3],
+        c:"foo"
+    }
+    let a= mergeObject(object,other);
+    console.log("a",a);
+
+    //4、浅拷贝 方法一
+    // const cloneObj= {x:'abc',y:{m:1}};
+    // const result =  shallowClone1(cloneObj);
+    // cloneObj.y.m=2
+    // console.log("cloneObj",cloneObj)
+    // console.log("result",result)
+
+    //5、 浅拷贝 方法二
+    // const result =  shallowClone2(cloneObj);
+    // console.log("result",result)
+
+
+    //6、深拷贝 方法一
+    const cloneObj= {
+        a:[1,2],
+        x:'abc',
+        y:{m:1},
+        //JSON 不能克隆方法
+        fn:function(){}
+    };
+    // 循环引用
+    // cloneObj.a.push(cloneObj.y)
+    // const result = deepClone1(cloneObj)  
+    // result.y.m=1000; 
+    // console.log("cloneObj",cloneObj);
+    // console.log("result",result); 
+
+    // 7、深拷贝 方法二
+    let result = deepClone2(cloneObj);
+    result.y.m=1000; 
+    console.log("cloneObj",cloneObj);
+    console.log("result",result);
+    </script>
+  </body>
+</html>

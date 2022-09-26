@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* 方法1：浮动 布局  
+        优点：兼容性好
+        缺点： 浮动会脱离标准文档流 因此需要清除浮动（我们解决这个问题即刻）
+    */
+    /* 
+    .container{
+        width:100%;
+        height:100px;
+    }
+    .container div{
+        height: 100px;
+    }
+    .main{
+        background:blue
+    }
+    .left{
+        width:300px;
+        float: left;
+        background:red;
+    }
+    .right{
+        width:300px;
+        float: right;
+        background:red;
+    } */
+
+     /* 方法2：绝对定位 布局
+        优点：快捷
+        缺点：导致子元素脱离标准文档流 可实用性差
+      */
+        /* .container{
+            position: relative;
+            width:100%;
+            height:100px;
+        }
+        .container div{
+            position: absolute;
+            height: 100px;
+        }
+        .main{
+            left:300px;
+            right:300px;
+            background:blue
+        }
+        .left{
+            left:0px;
+            width:300px;
+            background:red;
+        }
+        .right{
+            right:0px;
+            width:300px;
+            background:red;
+        } */
+
+        /* 方法3：flexbox布局 
+            优点：解决了上面两个方法不足，flex 布局比较完美
+        */
+        /* .container{
+            display: flex;
+            width:100%;
+            height:100px;
+        }
+        .container div{
+            height: 100px;
+        }
+        .main{
+            background:blue;
+            flex:1
+        }
+        .left{
+            width:300px;
+            background:red;
+        }
+        .right{
+            width:300px;
+            background:red;
+        } */
+
+        /* 方法4：tab布局 
+            缺点：因为三个部分都当成了单元格来对待 此时 如果中间的部分变高了其他部分也会被迫调整高度。
+            但是在很多场景下 我们并不需要两侧的高度增加
+
+            优点：表格布局在很多场景中很实用，兼容性非常好。因为IE8不支持 flex，此时可以尝试表格布局
+        */
+        /* .container{
+            width:100%;
+            height:100px;
+            display: table;
+        }
+        .container div{
+            height: 100px;
+            display:table-cell;
+        }
+        .main{
+            background:blue;
+        }
+        .left{
+            width:300px;
+            background:red;
+        }
+        .right{
+            width:300px;
+            background:red;
+        } */
+
+         /* 方法5：layout布局 
+            CSS3中引入的布局，很好用。代码量简化了很多。
+         */
+         .container{
+           width:100%;
+           height:100px;
+           display: grid;
+           grid-template-rows:100px;
+           grid-template-columns: 300px auto 300px;
+        }
+        .container div{
+            height: 100px;
+        }
+        .main{
+            background:blue;
+        }
+        .left{
+            background:red;
+        }
+        .right{
+            background:red;
+        } 
+
+</style>
+<body>
+<!-- 问题：假设容器的高度默认100px，请写出三栏布局，其中左栏、右栏的宽度各为300px，中间的宽度自适应。 -->
+    <div class="container">
+        <div class="left"></div>
+        <div class="main"></div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>

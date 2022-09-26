@@ -8,45 +8,86 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <style>
+    body {
+      height: 2000px;
+      background: linear-gradient(red, yellow);
+    }
+  </style>
+  <body>
+    <input type="text" id="input" />
     <script>
-        //节流 （一段时间执行一次之后不会在执行第二次）
-        function throttle (fn,delay){
-            let canuse= true
-            return function (){
-                if(canuse){
-                    fn.apply(this,arguments);
-                    canuse=false
-                    setTimeout(()=>canuse=true,delay)
-                }
-            }
-        }
-        const throttled= throttle(()=>console.log('hi'))
-        throttled()
-        throttled()
+      function throttle(callback, delay) {
+        let startTime = 0;
+        return function (e) {
+          if (Date.now() - startTime > delay) {
+            callback.call(this, e);
+            startTime = Date.now();
+          }
+        };
+      }
 
-        //防抖(一段时间会等，然后带着一起做了)
-         function debounce(fn,delay){
-             let timerId = null;
-             return function(){
-                 let context =this;
-                if(timerId) window.clearTimeout(timerId);
-                 timerId = setTimeout(()=>{
-                    fn.apply(context,arguments)
-                    timerId=null
-                },delay)
-             }
-         }
-         const debounced =debounce(()=>console.log("hi"))
-         debounced()
-         debounced()
+      window.addEventListener(
+        "scroll",
+        throttle(function () {
+          console.log(Date.now());
+        }, 1000)
+      );
 
+      function bounce(callback, time) {
+        let timeId = null;
+        return function (e) {
+          if (timeId !== null) {
+            clearTimeout(timeId);
+          }
+          timeId = setTimeout(() => {
+            callback.call(this, e);
+            timeId = null;
+          }, time);
+         
+        };
+      }
+      let input = document.getElementById("input");
+      input.onkeydown = bounce(function (e) {
+        console.log("eee", e.keyCode);
+      }, 1000);
+
+      //节流 （一段时间执行一次之后不会在执行第二次）
+      // function throttle (fn,delay){
+      //     let canuse= true
+      //     return function (){
+      //         if(canuse){
+      //             fn.apply(this,arguments);
+      //             canuse=false
+      //             setTimeout(()=>canuse=true,delay)
+      //         }
+      //     }
+      // }
+      // const throttled= throttle(()=>console.log('hi'))
+      // throttled()
+      // throttled()
+
+      //防抖(一段时间会等，然后带着一起做了)
+      //  function debounce(fn,delay){
+      //      let timerId = null;
+      //      return function(){
+      //          let context =this;
+      //         if(timerId) window.clearTimeout(timerId);
+      //          timerId = setTimeout(()=>{
+      //             fn.apply(context,arguments)
+      //             timerId=null
+      //         },delay)
+      //      }
+      //  }
+      //  const debounced =debounce(()=>console.log("hi"))
+      //  debounced()
+      //  debounced()
     </script>
-</body>
+  </body>
 </html>
