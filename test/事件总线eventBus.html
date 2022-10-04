@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const eventBus = {
+        //保存类型与回调的容器
+        callbacks: {},
+      };
+      //绑定事件
+      eventBus.on = function (type, callback) {
+         //判断 
+        if (this.callbacks[type]) {
+            //如果 callbacks 属性中存在该类型事件
+          this.callbacks[type].push(callback);
+        } else {
+          // 如果callbacks 属性中不存在该类型事件
+          this.callbacks[type] = [callback];
+        }
+      };
+      eventBus.emit = function (type, data) {
+        if (this.callbacks[type] && this.callbacks[type].length > 0) {
+          this.callbacks[type].forEach((callback) => {
+            callback(data);
+          });
+        }
+      };
+
+      eventBus.off = function(eventName){
+        if(eventName){
+            delete this.callbacks[eventName]
+        }else{
+            this.callbacks ={}
+        }
+      }
+
+      eventBus.on("login", (data) => {
+        console.log(data + "用户已经登录");
+      });
+      eventBus.on("login", (data) => {
+        console.log(data + "登录数据已经写入");
+      });
+
+
+
+      setTimeout(() => {
+        eventBus.emit("login", "张三");
+      }, 2000);
+
+      eventBus.off('login')
+      console.log("eventBus",eventBus);
+    </script>
+  </body>
+</html>

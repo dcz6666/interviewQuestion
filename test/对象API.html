@@ -16,7 +16,7 @@
         return []
       }
       //调用newInstance 函数创建对象
-      let obj = newInstance(Person, "张三", 18);
+    //   let obj = newInstance(Person, "张三", 18);
 
 
     // 2、检查类型
@@ -54,13 +54,14 @@
 
 
     //6、深拷贝 方法一
-    const cloneObj= {
-        a:[1,2],
-        x:'abc',
-        y:{m:1},
-        //JSON 不能克隆方法
-        fn:function(){}
-    };
+    // const cloneObj= {
+    //     a:[1,2],
+    //     x:'abc',
+    //     y:{m:1},
+    //     b:['e','f'],
+    //     //JSON 不能克隆方法
+    //     fn:function(){}
+    // };
     // 循环引用
     // cloneObj.a.push(cloneObj.y)
     // const result = deepClone1(cloneObj)  
@@ -69,10 +70,34 @@
     // console.log("result",result); 
 
     // 7、深拷贝 方法二
-    let result = deepClone2(cloneObj);
-    result.y.m=1000; 
-    console.log("cloneObj",cloneObj);
-    console.log("result",result);
+    // cloneObj.a.push(cloneObj.y)
+    // let result = deepClone2(cloneObj);
+    // result.y.m=1000; 
+    // console.log("cloneObj",cloneObj);
+    // console.log("result",result);
+    
+    // 8、深拷贝 方法三
+    //   cloneObj.a.push(cloneObj.y)
+    //     let result = deepClone2(cloneObj);
+    //     result.y.m=1000; 
+    //     console.log("cloneObj",cloneObj);
+    //     console.log("result",result);
+
+          // 9、深拷贝 方法三
+          const obj = {
+              a:1,
+              b:['e','f','g'],
+              c:{h:20},
+              d:function(){
+              }
+          }
+         // 循环效率问题优化
+          obj.b.push(obj.c);
+          obj.c.j = obj.b;
+          let result = deepClone4(obj);
+          console.log("obj",obj);
+          console.log("result",result);
+ 
     </script>
   </body>
 </html>

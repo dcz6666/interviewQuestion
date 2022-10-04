@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const Pubsub={
+            id:1,
+            // 频道与回调保存容器
+            callbacks:{
+                // pay:{
+                //     token1:fn,
+                //     token2:fn,
+                // }
+            }
+        }
+        Pubsub.subscribe=function(channel,callback){
+            //创建唯一编号
+            let token = "token"+this.id++
+            //判断callbacks 属性中是否有pay
+            if(this.callbacks[channel]){
+                this.callbacks[channel][token] = callback
+            }else{
+                this.callbacks[channel]={
+                    [token]:callback
+                }
+            }
+            //返回频道订阅的id
+            return token
+        }
+
+        /** 订阅频道*/
+        Pubsub.publish=function(channel,data){
+            // 获取当前频道中所有的回调
+            if(this.callbacks[channel]){
+                Object.values(this.callbacks[channel]).forEach((callback)=>{
+                    //执行回调
+                    callback(data)
+                })
+            }
+        }
+        /**取消订阅*/
+        // 1、没有传值，flag为undefined
+        // 2、传入token 字符串
+        // 3、msgName 字符串
+        Pubsub.unsubscribe =function(flag){
+            //如果flag为undefined 则清空所有订阅
+            if(flag === undefined){
+                this.callbacks={}
+            }else if(typeof flag=='string'){
+                // 判断是否为token 开头
+                if(flag.indexOf("token")===0){
+                    //如果是 表明是一个订阅id
+                  let callbackObj = Object.values(this.callbacks).find((obj)=>{
+                       return obj.hasOwnProperty(flag)
+                    })
+                    if(callbackObj){
+                        delete callbackObj[flag]
+                    }
+                }else{
+                    // 表明是一个频道的名称
+                    delete this.callbacks[flag]
+                }
+            }
+        }
+
+
+
+        // 订阅一个频道
+        let pid1= Pubsub.subscribe('pay',data=>{
+            console.log("商家接到订单，准备开始制作",data)
+        })
+        let pid2= Pubsub.subscribe('pay',data=>{
+            console.log("骑手接到订单,准备接单",data)
+        })
+        let pid3= Pubsub.subscribe('cancel',data=>{
+            console.log("骑手接到订单,准备接单",data)
+        })
+        console.log("pid1:",pid1);
+        console.log("pid2:",pid2);
+        console.log("pid3:",pid3);
+
+        //取消订阅
+        Pubsub.unsubscribe('token1')
+        console.log("Pubsub:",Pubsub)
+
+        //发布消息
+        // Pubsub.publish('pay',{
+        //     title:"盖饭",
+        //     price:123,
+        //     pos:"三年二班"
+        // })
+    </script>
+</body>
+</html>

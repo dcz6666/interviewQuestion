@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="items">
+        <li>AAAA</li>
+        <li>BBBB</li>
+        <li>CCCC</li>
+        <li>DDDD</li>
+    </ul>
+</body>
+<script>
+    //调用函数绑定事件
+addEventListener("#items",'click',function(e){
+    console.log(this.innerHTML)
+},'li')
+function addEventListener(el,type,fn,selector){
+    //判断 el 的类型
+    if(typeof el ==='string'){
+        el =document.querySelector(el);
+    }
+    //事件绑定
+    //若没有传递子元素的选择器 则给el 元素绑定事件
+    if(!selector){
+        el.addEventListener(type,fn,)
+    }else{
+        el.addEventListener(type,function(e){
+            //获取点击的目标事件源
+            const target =e.target;
+            //判断选择器与目标元素是否相符合
+            if(target.matches(selector)){
+                //若符合 则调用回调
+                fn.call(target,e)
+            }
+        })
+    }
+}
+</script>
+</html>

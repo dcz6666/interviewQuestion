@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="../dist/tools.js"></script>
+<script>
+    console.log("chengTools:",chengTools.axios)
+    let arr =[14,45,74,54,54,41,45,4]
+    console.log("chunk",chengTools.chunk(arr,4))
+    console.log("map",chengTools.map(arr,item=>{
+        return item*10
+    }))
+    chengTools.axios({
+        method:'GET',
+        url:'https://www.tianqiapi.com/api/?version=v1&city=%E5%8C%97%E4%BA%AC&appid=31247559&appsecret=3VC9Wg7b'
+    }).then(response=>{
+        console.log("response:===123",response)
+    },err=>{
+        console.log("err",err)
+    })
+</script>
+<body>
+    
+</body>
+</html>

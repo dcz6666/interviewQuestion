@@ -170,6 +170,7 @@ function chunk(arr, size) {
         }
 
     })
+    return result
     console.log("result:", result);
 }
 
