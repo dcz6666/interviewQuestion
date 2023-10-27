@@ -8,50 +8,125 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script>
         /** promise用法*/
-        function fn(){
-            return new Promise((resolve,reject)=>{
-                调用成功 resolve(数据)
-                调用失败 reject(错误)
-            })
-        }
-        fn().then(success,fail)
-       /** Promise.all 用法*/
+        // function fn() {
+        //     return new Promise((resolve, reject) => {
+        //         调用成功 resolve(数据)
+        //         调用失败 reject(错误)
+        //     })
+        // }
+        // fn().then(success, fail)
+        // /** Promise.all 用法*/
 
-       Promise.all([promise1,promise2]).then(success1,fail)
+        // Promise.all([promise1, promise2]).then(success1, fail)
 
-      // promise1和promise2 都成功才会调用sucess1
-     
-      /**promise.race 用法*/
-        Promise.race([promise1,promise2]).then(sucess1,fail)
+        // // promise1和promise2 都成功才会调用sucess1
+
+        // /**promise.race 用法*/
+        // Promise.race([promise1, promise2]).then(sucess1, fail)
         //promise1和promise2只要有一个成功就会调用success1
         //promise1和promise2只要有一个失败就会调用fail
 
 
         // 手写promise 
         //promise有三种状态：pending 初始状态 fulfilled 成功状态； rejected 失败状态
-        function Promise (exceutor){
-            let self=this
-            self.status='pending'
-            self.value=undefined
-            self.resove=undefined
+        // function Promise (exceutor){
+        //     let self=this
+        //     self.status='pending'
+        //     self.value=undefined
+        //     self.resove=undefined
 
-            function resolve(){
-                if(self.status=='pending'){
-                    self.value=resolve
-                    
+        //     function resolve(){
+        //         if(self.status=='pending'){
+        //             self.value=resolve
+
+        //         }
+        //     }
+        // }
+
+
+
+        class MyPromise {
+            constructor(executor) {
+                this.initValue()
+                this.initBind()
+                try {
+                    executor(this.resolve, this.reject);
+                } catch (error) {
+                    this.reject(error)
+                }
+            }
+            initValue() {
+                //初始化的值
+                this.promiseResult = null;      //终值
+                this.promiseStatus = "pending"  //状态
+                this.onFulFilledCallBacks = []
+                this.onRejectedCallbacks = []
+            }
+            initBind() {
+                this.resolve = this.resolve.bind(this)
+                this.reject = this.reject.bind(this)
+            }
+            resolve(value) {
+                //state 是不可变的
+                if (this.promiseStatus !== "pending") return;
+                // 如果执行resolve，状态变为fulfilled
+                this.promiseStatus = "fulfilled"
+                // 终值为传进来的值
+                this.promiseResult = value
+                //执行保存成功的回调
+                while (this.onFulFilledCallBacks.length) {
+                    this.onFulFilledCallBacks.shift()(this.promiseResult)
+                }
+            }
+            reject(reason) {
+                //state 是不可变的
+                if (this.promiseStatus !== "pending") return;
+                // 如果执行reject，状态变为rejected
+                this.promiseStatus = "rejected"
+                // 终值为传进来的reason
+                this.promiseResult = reason
+
+                //执行保存失败的回调
+                while (this.onRejectedCallbacks.length) {
+                    this.onRejectedCallbacks.shift()(this.promiseResult)
+                }
+            }
+            then(onFulFilled, onRejected) {
+                // 接收两个回调 onFulfilled, onRejected
+
+                // 参数校验，确保一定是函数
+                onFulFilled = typeof onFulFilled === 'function' ? onFulFilled : val => val
+                onRejected = typeof onRejected === 'function' ? onRejected : reason => { throw reason }
+                if (this.promiseStatus == 'fulfilled') {
+                    // 如果当前为成功状态，执行第一个回调
+                    onFulFilled(this.promiseResult)
+                    // 如果当前为失败状态，执行第二个回调
+                } else if (this.promiseStatus == 'rejected') {
+                    onRejected(this.promiseResult)
+                } else if (this.promiseStatus == 'pending') {
+                    // 如果状态为待定状态，暂时保存两个回调
+                    // 如果状态为待定状态，暂时保存两个回调
+                    this.onFulFilledCallBacks.push(onFulFilled().bind(this))
+                    this.onRejectedCallbacks.push(onRejected().bind(this))
                 }
             }
         }
-
+        const test3 = new MyPromise((resolve, reject) => {
+            throw ('fail')
+        })
+        console.log(test3) // MyPromise { PromiseState: 'rejected', PromiseResult: 'fail' }
     </script>
 </body>
+
 </html>
