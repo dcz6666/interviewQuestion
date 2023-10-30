@@ -8,40 +8,92 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script src="./js/call&applay&bind.js"></script>
     <script>
-        // 声明一个函数
-        function add (a,b){
-            console.log("this",this)
-            return a+b+this.c
+      // 声明一个函数
+      //   function add(a, b) {
+      //     console.log("this", this);
+      //     return a + b + this.c;
+      //   }
+      //   //声明一个对象
+      //   let obj = {
+      //     c: 100,
+      //   };
+      //   // 添加全局属性
+      //   window.c = 500;
+      //   //执行 call
+      //   console.log("call", call(add, obj, 10, 20)); //130
+      //   console.log("call", call(add, null, 10, 20)); //530
+
+      //   //执行 applay
+      //   console.log("apply", apply(add, obj, [10, 20])); //130
+      //   console.log("apply", apply(add, null, [10, 20])); //530
+
+      // 执行 bind
+      // let fn =bind(add,obj,10,20);
+      // console.log("bind",fn());
+      //   let fn = bind(add, obj);
+      //   console.log("bind", fn(10, 20));
+
+      Function.prototype.call2 = function (context) {
+        if (typeof context === "undefine" || context == null) {
+          context = window;
         }
-        //声明一个对象
-        let obj={
-            c:100
+        let fnSymbol = Symbol();
+        context[fnSymbol] = this;
+        let args = [...arguments].slice(1);
+        let result = context[fnSymbol](...args);
+        delete context[fnSymbol]();
+        return result;
+      };
+
+      Function.prototype.apply2 = function (context, args) {
+        if (typeof context === "undefine" || context == null) {
+          context = window;
         }
-        // 添加全局属性
-        window.c=500
-        //执行 call
-        console.log("call",call(add,obj,10,20)) //130
-        console.log("call",call(add,null,10,20))//530
+        let fnSymbol = Symbol();
+        context[fnSymbol] = this;
+        let result = context[fnSymbol](args);
+        delete context[fnSymbol];
+        return result;
+      };
 
-       //执行 applay
-        console.log("apply",apply(add,obj,[10,20])); //130
-        console.log("apply",apply(add,null,[10,20]));//530
+      Function.prototype.bind2= function(context){
+        if (typeof context === "undefine" || context == null) {
+          context = window;
+        }
+        let self=this;
+        var args= Array.prototype.slice.call(arguments,1);
+        return function(){
+            var bindArgs =Array.prototype.slice.call(arguments);
+            return self.apply(context,args.concat(bindArgs));
+        }
+      }
 
-       //执行 bind
-    //    let fn =bind(add,obj,10,20);
-    //    console.log("bind",fn());
-       let fn =bind(add,obj);
-       console.log("bind",fn(10,20));
+      let foo = {
+        value: 1,
+      };
+      function bar(list) {
+        console.log(this.value);
+        console.log("list",list);
+        return {
+          value: this.value,
+          name,
+          age,
+        };
+      }
+    //   let a = bar.call2(foo, "张三", 45);
+    //   console.log("a", a);
 
+    let a = bar.apply2(foo, ["张三", 45]);
+      console.log("a", a);
     </script>
-</body>
+  </body>
 </html>

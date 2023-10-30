@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //new 创建一个对象类型的实例 或者构造函数的内置对象
+      //   function Person(name) {
+      //     this.name = name;
+      //   }
+      //   Person.prototype.sayYourName = function () {
+      //     console.log(this.name);
+      //   };
+      //   var person = new Person("张三");
+
+      //   console.log("person", person);
+
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        return {
+          name,
+          age,
+          habit: "games",
+        }
+      }
+      Person.prototype.sayYourName = function () {
+        console.log(this.name);
+      };
+
+      function objectFactory() {
+        let obj = new Object();
+        let Constructor = [].shift.call(arguments);
+        obj.__proto__ = Constructor.prototype;
+        var result = Constructor.apply(obj, arguments);
+        return typeof result ==='object'?result:obj;
+      }
+      objectFactory(Person, "张三", 18);
+
+      
+    //   类数组对象 和arguments
+    // 方法一
+        Array.prototype.slice.call(arguments,0);
+    //方法二
+        [].shift.call(arguments)
+
+
+    </script>
+  </body>
+</html>
