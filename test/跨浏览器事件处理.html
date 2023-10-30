@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">按钮</button>
+    <script>
+        var EventUtil = {
+            addHandler: (ele, type, handler) => {
+                console.log("1234567");
+                if (ele.addEventListener) {
+                    ele.addEventListener(type, handler, false)
+                } else if (ele.attachEvent) {
+                    ele.attachEvent("on" + type, handler)
+                } else {
+                    ele[`on${type}`] = handler
+                }
+            },
+
+            removeHandler: (ele, type, handler) => {
+                if (ele.removeEventListener) {
+                    ele.removeEventListener(type, handler, false)
+                } else if (ele.detachEvent) {
+                    ele.detachEvent("on" + type, handler)
+                } else {
+                    ele[`on${type}`] = null
+                }
+            },
+            //获取event事件
+            getEvent: (event) => {
+                return event ? event : window.event;
+            },
+            //获取当前目标
+            getTarget:(event)=>{
+                return event.target?event.target:event.srcElement
+            },
+            //阻止默认事件
+            preventDefault:(event)=>{
+                if(event.preventDefault){
+                    event.preventDefault()
+                }else{
+                    event.returnValue=false
+                }
+            },
+            //停止传播事件
+            stopPropagation:(event)=>{
+                if(event.stopPropagation){
+                    event.stopPropagation()
+                }else{
+                    event.cancelBubble= true;
+                }
+            }
+
+
+        }
+        let btn = document.getElementById("btn");
+        var handler = function () {
+            console.log("点击")
+        }
+        EventUtil.addHandler(btn, 'click', handler)
+    </script>
+</body>
+
+</html>

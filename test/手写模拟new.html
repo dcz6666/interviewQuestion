@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+            this.habit = 'Games';
+        }
+        Person.prototype.strength = 80;
+        Person.prototype.sayYourName = function () {
+            console.log("我是" + this.name);
+        }
+
+        // var person = new Person("张三", 49);
+
+        // console.log(person.name) // Kevin
+        // console.log(person.habit) // Games
+        // console.log(person.strength) // 60
+        // person.sayYourName()
+
+        function objectFactory() {
+            let obj = new Object();
+            Constructor = [].shift.call(arguments);
+            obj.__proto__ = Constructor.prototype;
+            let ret = Constructor.apply(obj, arguments);
+            return typeof ret==='object'?ret:obj
+        }
+
+        // var person = new objectFactory(Person, 'Kevin', 18)
+
+        // console.log(person.name) // Kevin
+        // console.log(person.habit) // Games
+        // console.log(person.strength) // 60
+        // person.sayYourName()
+
+        // function Person(name, age) {
+        //     this.strength = 60;
+        //     this.age = age;
+
+            // return {
+            //     name: name,
+            //     habit: 'Games'
+            // }
+        // }
+
+        // var person = new Person('Kevin', '18');
+
+        // console.log(person.name) // Kevin
+        // console.log(person.habit) // Games
+        // console.log(person.strength) // undefined
+        // console.log(person.age) // undefined
+
+
+        var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
+        // arrayLike= Array.prototype.join.call(arrayLike,"&");
+        // 方法一
+        // arrayLike= Array.prototype.slice.call(arrayLike);
+        // 方法二
+        // arrayLike= Array.prototype.splice.call(arrayLike,0);
+        // 方法三
+        // arrayLike= Array.from(arrayLike)
+        //方法四
+        arrayLike= Array.prototype.concat.apply([],arrayLike);
+
+        console.log("arrayLike",arrayLike);
+
+    </script>
+</body>
+
+</html>
